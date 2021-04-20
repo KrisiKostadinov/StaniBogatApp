@@ -1,10 +1,13 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .app {
   background: radial-gradient(#3600cc, #222);
   width: 100vw;
   height: 100vh;
+  padding: 20px;
 }

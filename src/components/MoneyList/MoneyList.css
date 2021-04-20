@@ -1,0 +1,19 @@
+.money-list {
+    width: fit-content;
+    border: 2px solid #fff;
+    margin-left: auto;
+    background-color: #222;
+    color: #fff;
+}
+
+.number-money {
+    padding: 4px 10px;
+}
+
+.number-money .number {
+    margin-right: 20px;
+}
+
+.number-money.selected {
+    background-color: #002fff;
+}
