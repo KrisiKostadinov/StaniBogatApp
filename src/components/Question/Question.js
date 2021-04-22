@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import CurrentQuestionContext from '../../Context/CurrentQuestionContext';
 import QuestionContext from '../../Context/QuestionContext';
+import { getMoneyList, getQuestions } from '../../data';
 import { shuffle } from '../../utils/shuffleArray';
 import './Question.css';
 
 export const Question = () => {
     let nextQuestionNumber = 0;
 
+    const [alphaArr] = useState(['A', 'B', 'C', 'D']);
     const { currentQuestionNumber, setCurrentQuestionNumber } = useContext(CurrentQuestionContext);
     const { questionContext, setQuestionContext } = useContext(QuestionContext);
 
@@ -15,6 +17,8 @@ export const Question = () => {
     const [isLockBoard, setIsLockBoard] = useState(false);
     const [isGameOver, setIsGameOver] = useState(false);
     const [isGameCompleted, setIsGameCompleted] = useState(false);
+    const [moneyList, setMoneyList] = useState([]);
+    const [money, setMoney] = useState(0);
 
     function handleStart() {
         setIsGameOver(false);
@@ -26,8 +30,7 @@ export const Question = () => {
 
     function reset() {
         async function fetchQuestions() {
-            const res = await getAll();
-            return await res.json();
+            return await getAll();
         }
 
         fetchQuestions()
@@ -39,9 +42,19 @@ export const Question = () => {
                 setQuestionContext(shuffledQuestions);
             });
     }
-
+    
     function handleAnswer(event) {
-        const answer = event.target.querySelector('.answer-text').textContent;
+        let el = event.target;
+        let answer;
+
+        while (true) {
+            if (el.tagName === 'LI') {
+                answer = el.querySelector('.answer-text').textContent;
+                break;
+            } else {
+                el = el.parentElement;
+            }
+        }
 
         setIsLockBoard(true);
 
@@ -51,6 +64,7 @@ export const Question = () => {
             nextQuestionNumber = currentQuestionNumber;
             nextQuestionNumber++;
             setIsCorrectAnswer(true);
+            setMoney(moneyList[nextQuestionNumber - 1]);
         }
 
         setTimeout(() => {
@@ -70,7 +84,8 @@ export const Question = () => {
     }, []);
 
     async function getAll() {
-        return fetch('http://localhost:3001/questions');
+        setMoneyList(getMoneyList());
+        return getQuestions();
     }
 
     function updateQuestion() {
@@ -94,9 +109,9 @@ export const Question = () => {
                         <div className="question">
                             <h2 className="title">{question.title}</h2>
                             <ul className="answers">
-                                {question.answers.map((answer) =>
+                                {question.answers.map((answer, index) =>
                                     <li key={answer.number} onClick={handleAnswer}>
-                                        <span className="answer-number">{answer.number}</span>
+                                        <span className="answer-number">{alphaArr[index]}</span>
                                         <span className="answer-text">{answer.text}</span>
                                     </li>)}
                             </ul>
@@ -109,13 +124,14 @@ export const Question = () => {
                         </div>
                         : <div className="question">
                             <h2>Congratulations!</h2>
-                            <h4>100,000 лв.</h4>
+                            <h4>{money} лв.</h4>
                             <button onClick={handleStart} className="game-over">
                                 <i className="fas fa-undo"></i>
                             Нова игра
                         </button>
                         </div>
                     : <div className="question">
+                        <h4>{money} лв.</h4>
                         <button onClick={handleStart} className="game-over">
                             <i className="fas fa-undo"></i>
                             Нова игра
