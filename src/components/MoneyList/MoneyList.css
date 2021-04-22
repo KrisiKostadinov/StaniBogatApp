@@ -9,6 +9,12 @@
     padding: 4px 10px;
 }
 
+.number-money:nth-child(5),
+.number-money:nth-child(10),
+.number-money:nth-child(15) {
+    background-color: #444;
+}
+
 .number-money .number {
     margin-right: 20px;
 }

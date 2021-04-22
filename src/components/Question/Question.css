@@ -2,6 +2,7 @@
     max-width: 600px;
     min-width: 600px;
     color: #fff;
+    text-align: center;
 }
 
 .question > .title {
@@ -47,4 +48,24 @@
 
 .question > .question-msg {
     text-align: center;
+}
+
+.start-btn,
+.game-over {
+    color: #00f;
+    font-size: 20px;
+    border-radius: 25px;
+    border: 2px solid #222;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.start-btn:hover,
+.game-over:hover {
+    color: #fff;
+    background-color: #0f0;
+}
+
+.game-over > i {
+    margin-right: 10px;
 }

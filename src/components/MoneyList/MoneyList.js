@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import CurrentQuestionContext from '../../Context/CurrentQuestionContext';
 import './MoneyList.css';
 
 export const MoneyList = () => {
@@ -65,20 +66,17 @@ export const MoneyList = () => {
             money: 100000
         }
     ];
-    let [ selectedNumber, setSelectedNumber ] = useState(1);
 
-    function nextNumber() {
-        setSelectedNumber(selectedNumber++);
-    }
+    const { currentQuestionNumber } = useContext(CurrentQuestionContext);
 
     function numberWithCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
     return (
-        <div onClick={nextNumber} className="money-list">
+        <div className="money-list">
             {numbersMoney.map((numberMoney) => 
-            <div key={numberMoney.number} className={"number-money " + (selectedNumber === numberMoney.number ? "selected" : '')}>
+            <div key={numberMoney.number} className={"number-money " + (currentQuestionNumber + 1 === numberMoney.number ? "selected" : '')}>
                 <span className="number">{numberMoney.number}</span>
                 <span className="money">{numberWithCommas(numberMoney.money)}</span> лева
             </div>)}
